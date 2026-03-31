@@ -454,6 +454,49 @@ def download_pdf():
     )
 
 
+# ---------- REST API (JSON) ----------
+@app.route("/api/predict", methods=["POST"])
+def api_predict():
+    try:
+        payload = request.get_json(force=True)
+        required = ["age", "sex", "cp", "trestbps", "chol", "fbs", "restecg", "thalach", "exang", "oldpeak", "slope", "ca", "thal"]
+        for field in required:
+            if field not in payload:
+                return {"error": f"Missing field: {field}"}, 400
+
+        features = np.array(
+            [[
+                int(payload["age"]),
+                int(payload["sex"]),
+                int(payload["cp"]),
+                int(payload["trestbps"]),
+                int(payload["chol"]),
+                int(payload["fbs"]),
+                int(payload["restecg"]),
+                int(payload["thalach"]),
+                int(payload["exang"]),
+                float(payload["oldpeak"]),
+                int(payload["slope"]),
+                int(payload["ca"]),
+                int(payload["thal"]),
+            ]]
+        )
+
+        prediction = int(model.predict(features)[0])
+        proba = None
+        if hasattr(model, "predict_proba"):
+            proba = float(model.predict_proba(features)[0][1])
+
+        return {
+            "prediction": prediction,
+            "probability": proba,
+            "message": "Heart disease detected" if prediction == 1 else "No heart disease detected",
+        }
+
+    except Exception as err:
+        return {"error": str(err)}, 500
+
+
 # ----------------- REGISTER / LOGIN / LOGOUT -----------------
 @app.route("/register", methods=["GET", "POST"])
 def register():
