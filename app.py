@@ -126,13 +126,6 @@ def predict_form():
     return render_template("main.html")
 
 
-@app.route("/output")
-@login_required
-def output():
-    # Show example output image/video from static folder
-    return render_template("output.html")
-
-
 # ---------- PREDICTION + SAVE TO DB + STORE IN SESSION ----------
 @app.route("/predict", methods=["POST"])
 @login_required
@@ -454,6 +447,7 @@ def download_pdf():
     )
 
 
+<<<<<<< HEAD
 # ---------- REST API (JSON) ----------
 @app.route("/api/predict", methods=["POST"])
 def api_predict():
@@ -497,6 +491,8 @@ def api_predict():
         return {"error": str(err)}, 500
 
 
+=======
+>>>>>>> 1359b50 (Initial commit for heart disease prediction)
 # ----------------- REGISTER / LOGIN / LOGOUT -----------------
 @app.route("/register", methods=["GET", "POST"])
 def register():

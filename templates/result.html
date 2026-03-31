@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result – AK Health Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+        body {
+            background: #f5f6fa;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        .result-card {
+            max-width: 700px;
+            margin: 60px auto;
+            border-radius: 16px;
+            box-shadow: 0 14px 32px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .result-header {
+            background: #d63031;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .result-body {
+            background: #fff;
+            padding: 24px 28px 28px;
+        }
+        .badge-status {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="result-card">
+        <div class="result-header">
+            <h3 class="mb-0">Prediction Result</h3>
+        </div>
+
+        <div class="result-body">
+            {% if error %}
+                <div class="alert alert-danger">
+                    An error occurred: {{ error }}
+                </div>
+            {% else %}
+                {% if prediction == 1 %}
+                    <div class="alert alert-danger d-flex justify-content-between align-items-center">
+                        <span><strong>Result:</strong> Model predicts possibility of Heart Disease.</span>
+                        <span class="badge bg-light text-danger badge-status">High Risk</span>
+                    </div>
+                {% elif prediction == 0 %}
+                    <div class="alert alert-success d-flex justify-content-between align-items-center">
+                        <span><strong>Result:</strong> Model predicts No Heart Disease.</span>
+                        <span class="badge bg-light text-success badge-status">Low Risk</span>
+                    </div>
+                {% else %}
+                    <div class="alert alert-secondary">
+                        No prediction available.
+                    </div>
+                {% endif %}
+
+                <p>
+                    <strong>Model Confidence:</strong>
+                    {% if proba is not none %}
+                        {{ (proba * 100) | round(2) }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+
+                <hr>
+
+                <!-- Always use the session-based PDF endpoint -->
+                <a href="{{ url_for('download_pdf') }}"
+                   class="btn btn-outline-danger mb-3">
+                    Download Report as PDF
+                </a>
+            {% endif %}
+
+            <hr>
+
+<!-- ✔ Consult Specialist Button -->
+<a href="https://www.practo.com/bangalore/cardiologist?utm_source=opd_google_ksa&utm_medium=101064617277&utm_campaign=10011972210&sem=true&gad_source=1&gad_campaignid=10011972210&gbraid=0AAAAADgl2cLrcTHzyghnPBu739jIcG9UH&gclid=CjwKCAiA86_JBhAIEiwA4i9Ju9uluPQ_25Ey2BtpcGTtngR9W8ELWwvnF7wsPpDVSJJPsVGukppEnBoCj-gQAvD_BwE"
+   target="_blank"
+   class="btn btn-danger btn-lg mt-3 mb-3"
+   style="font-weight:600; border-radius:8px; width:100%;">
+    🩺 Consult a Heart Specialist
+</a>
+
+<p class="text-muted" style="font-size:13px;">
+    Redirects you to Practo to consult top cardiologists.
+</p>
+
+<hr>
+
+<a href="{{ url_for('predict_form') }}" class="btn btn-secondary btn-sm">
+    Back to Prediction Form
+</a>
+<a href="{{ url_for('home') }}" class="btn btn-link btn-sm">
+    Back to Home
+</a>
+
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

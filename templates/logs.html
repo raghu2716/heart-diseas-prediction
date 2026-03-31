@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Logs – Prediction Records</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    body { background:#f5f6fa; font-family:Arial; }
+    table { font-size:14px; }
+    .heading{
+        background:#d63031;color:#fff;padding:14px;border-radius:6px;
+        text-align:center;margin-bottom:20px;
+    }
+</style>
+</head>
+<body class="p-4">
+
+<div class="container">
+
+    <h2 class="heading">📄 Stored Predictions Report (Admin View)</h2>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th><th>Date</th><th>Age</th><th>Sex</th><th>CP</th><th>BP</th><th>Chol</th>
+                <th>FBS</th><th>ECG</th><th>Thalach</th><th>Exang</th><th>Oldpeak</th>
+                <th>Slope</th><th>CA</th><th>Thal</th><th>Prediction</th><th>Confidence</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{row[0]}}</td> <td>{{row[1]}}</td> <td>{{row[2]}}</td> <td>{{row[3]}}</td>
+                <td>{{row[4]}}</td> <td>{{row[5]}}</td> <td>{{row[6]}}</td> <td>{{row[7]}}</td>
+                <td>{{row[8]}}</td> <td>{{row[9]}}</td> <td>{{row[10]}}</td> <td>{{row[11]}}</td>
+                <td>{{row[12]}}</td> <td>{{row[13]}}</td> <td>{{row[14]}}</td>
+                <td>{% if row[15] == 1 %}🚨 Disease{% else %}✔ Healthy{% endif %}</td>
+                <td>{% if row[16] %}{{ (row[16]*100)|round(2) }}%{% else %}N/A{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{url_for('home')}}" class="btn btn-danger mt-3">&larr; Back to Dashboard</a>
+
+</div>
+</body>
+</html>
